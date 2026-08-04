@@ -61,3 +61,7 @@ api/config.js        POST: save settings (team names, meals, meals/person)
 api/submit.js        POST: save one person's order + post to Slack
 api/reset.js         POST: clear the week's submissions
 ```
+
+
+git config --global user.email "chris.bain@jetsonhome.com"
+git config --global user.name "Chris Bain"
