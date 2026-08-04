@@ -284,7 +284,19 @@ function copyRollupText(){
   });
 }
 
-function toggleSettings(){ settingsOpen = !settingsOpen; render(); }
+function toggleSettings(){
+  if(!settingsOpen){
+    const code = prompt('Enter the settings passcode:');
+    if(code === null) return;
+    if(code !== '2424'){
+      statusMsg = {type:'err', text:'Incorrect passcode.'};
+      render();
+      return;
+    }
+  }
+  settingsOpen = !settingsOpen;
+  render();
+}
 
 async function saveConfig(){
   try{
