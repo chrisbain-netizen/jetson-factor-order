@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jetson · Weekly Order Board</title>
+<link rel="icon" href="/jetson-logo-green.png">
+<style>
+  @font-face{ font-family:'MNKY Jane Condensed'; src:url('/fonts/mnkyjanecondensed-black.woff2') format('woff2'); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'MNKY Jane Semi'; src:url('/fonts/mnkyjanesemicondensed-black.woff2') format('woff2'); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'MNKY Jane Semi'; src:url('/fonts/mnkyjanesemicondensed-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'MNKY Jane'; src:url('/fonts/mnkyjane-regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'MNKY Jane'; src:url('/fonts/mnkyjane-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root{
+    --jetson-green:#3CD567;
+    --forest:#0F1F0D;
+    --fern:#113823;
+    --lime:#CBFF8A;
+    --off-white:#FBFAF1;
+    --dark-gray:#666858;
+    --mid-gray:#ACAA93;
+    --soft-gray:#E2E1D3;
+    --light-gray:#F2F0E4;
+    --shadow: 0 1px 2px rgba(15,31,13,0.08), 0 6px 18px rgba(15,31,13,0.07);
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:var(--off-white); color:var(--forest);
+    font-family:'MNKY Jane',Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 0 60px; }
+
+  .masthead{
+    background:var(--forest); color:var(--off-white);
+    padding:22px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    border-bottom:4px solid var(--jetson-green);
+  }
+  .masthead .brand{ display:flex; align-items:center; gap:14px; }
+  .masthead img.logo{ height:28px; display:block; }
+  .masthead .titles h1{
+    font-family:'MNKY Jane Condensed'; font-weight:900; text-transform:uppercase;
+    font-size:24px; line-height:0.9; margin:0; letter-spacing:0.5px;
+  }
+  .masthead .titles .eyebrow{
+    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--lime); margin-top:5px;
+  }
+  .gear{
+    background:none; border:1px solid var(--off-white); color:var(--off-white);
+    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+    padding:9px 14px; border-radius:20px; cursor:pointer;
+  }
+  .gear:hover{ background:var(--jetson-green); color:var(--forest); border-color:var(--jetson-green); }
+
+  .content{ padding:24px 24px 0; }
+
+  .rail-label{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dark-gray); margin-bottom:8px; }
+  .rail{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:26px; }
+  @media (max-width:700px){ .rail{ grid-template-columns:repeat(2,1fr); } }
+  .ticket{
+    position:relative; background:#fff; border-radius:3px; padding:14px 12px 16px;
+    box-shadow:var(--shadow); min-height:78px; border-top:3px dashed var(--soft-gray);
+  }
+  .ticket.filled{ border-top:3px solid var(--jetson-green); }
+  .ticket .name{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.3px; }
+  .ticket .status{ font-family:'MNKY Jane'; font-size:12px; color:var(--dark-gray); margin-top:4px; }
+  .ticket.filled .status{ color:var(--fern); font-weight:700; }
+  .ticket.empty .name{ color:var(--mid-gray); }
+
+  .panel{ background:#fff; border-radius:6px; box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
+  .panel h2{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:15px; text-transform:uppercase; letter-spacing:0.8px; margin:0 0 16px; color:var(--fern); }
+
+  label.field-label{ display:block; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--dark-gray); margin-bottom:6px; }
+  select, input[type=text], input[type=number]{
+    font-family:'MNKY Jane',Arial,sans-serif; font-size:15px; padding:10px 12px;
+    border:1px solid var(--soft-gray); border-radius:4px; background:var(--off-white); color:var(--forest); width:100%;
+  }
+  select:focus, input:focus{ outline:2px solid var(--jetson-green); outline-offset:1px; }
+
+  .row{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; margin-bottom:18px; }
+  .row > div{ flex:1; min-width:180px; }
+
+  .tray-bar{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    background:var(--light-gray); border:1px solid var(--soft-gray); border-radius:6px; padding:10px 16px; margin-bottom:16px;
+    position:sticky; top:10px; z-index:5;
+  }
+  .tray-count{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:14px; color:var(--dark-gray); }
+  .tray-count.full{ color:var(--fern); }
+  .tray-count.over{ color:#B0432B; }
+
+  .meal-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-bottom:18px; }
+  .meal{ border:1px solid var(--soft-gray); border-radius:6px; padding:12px; background:var(--off-white); display:flex; flex-direction:column; gap:8px; }
+  .meal.has-qty{ border-color:var(--jetson-green); background:#F1FCF4; }
+  .meal .tag{ align-self:flex-start; font-family:'MNKY Jane Semi'; font-weight:700; font-size:9px; letter-spacing:0.5px; text-transform:uppercase; padding:3px 9px; border-radius:10px; }
+  .tag-keto{ background:var(--fern); color:var(--off-white); }
+  .tag-calorie-smart{ background:var(--forest); color:var(--off-white); }
+  .tag-protein-plus{ background:var(--jetson-green); color:var(--forest); }
+  .tag-vegan-veggie{ background:var(--lime); color:var(--forest); }
+  .tag-chefs-choice{ background:var(--dark-gray); color:var(--off-white); }
+  .meal .mname{ font-size:14px; line-height:1.35; flex:1; }
+  .stepper{ display:flex; align-items:center; justify-content:space-between; }
+  .stepper button{ width:28px; height:28px; border-radius:50%; border:1px solid var(--forest); background:#fff; font-size:16px; cursor:pointer; line-height:1; color:var(--forest); }
+  .stepper button:disabled{ opacity:0.3; cursor:not-allowed; }
+  .stepper .qty{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:15px; min-width:20px; text-align:center; }
+
+  .submit-btn{
+    font-family:'MNKY Jane Semi'; text-transform:uppercase; letter-spacing:1px; font-size:13px; font-weight:900;
+    background:var(--jetson-green); color:var(--forest); border:none; padding:14px 22px; border-radius:4px; cursor:pointer; width:100%;
+  }
+  .submit-btn:disabled{ background:var(--soft-gray); color:var(--mid-gray); cursor:not-allowed; }
+  .submit-btn:not(:disabled):hover{ background:var(--lime); }
+
+  .msg{ font-size:13px; margin-top:10px; padding:10px 12px; border-radius:4px; font-family:'MNKY Jane'; }
+  .msg.ok{ background:#E7F8EC; color:var(--fern); }
+  .msg.err{ background:#FBEAE4; color:#8A3A22; }
+  .msg.info{ background:var(--light-gray); color:var(--dark-gray); }
+
+  .rollup-table{ width:100%; border-collapse:collapse; font-size:14px; }
+  .rollup-table th{ text-align:left; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--dark-gray); border-bottom:2px solid var(--forest); padding:8px 6px; }
+  .rollup-table td{ padding:9px 6px; border-bottom:1px solid var(--soft-gray); }
+  .rollup-table tr:last-child td{ border-bottom:none; }
+  .qty-badge{ font-family:'MNKY Jane Semi'; font-weight:900; background:var(--jetson-green); color:var(--forest); border-radius:12px; padding:2px 10px; font-size:13px; }
+
+  .by-person{ margin-top:18px; }
+  .person-block{ margin-bottom:14px; }
+  .person-block h4{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin:0 0 6px; color:var(--fern); }
+  .person-block ul{ margin:0; padding-left:18px; font-size:14px; }
+
+  .copy-btn{
+    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:1px;
+    background:none; border:1px solid var(--forest); color:var(--forest); padding:8px 14px; border-radius:20px; cursor:pointer; margin-top:14px;
+  }
+  .copy-btn:hover{ background:var(--forest); color:var(--off-white); }
+
+  .settings-grid{ display:grid; gap:16px; }
+  .edit-meal-row{ display:grid; grid-template-columns:1fr 140px 32px; gap:8px; align-items:center; margin-bottom:8px; }
+  .small-btn{ background:none; border:1px solid var(--soft-gray); border-radius:4px; cursor:pointer; padding:6px; font-size:14px; color:var(--forest); }
+  .add-meal-btn{
+    font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;
+    background:var(--off-white); border:1px dashed var(--mid-gray); padding:8px 12px; border-radius:4px; cursor:pointer; width:100%; color:var(--dark-gray);
+  }
+  .danger-btn{
+    font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;
+    background:none; color:#8A3A22; border:1px solid #8A3A22; padding:9px 14px; border-radius:4px; cursor:pointer;
+  }
+  .hint{ font-size:12px; color:var(--dark-gray); margin-top:4px; }
+  .slack-pill{ display:inline-flex; align-items:center; gap:6px; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:0.5px; text-transform:uppercase; padding:5px 10px; border-radius:14px; }
+  .slack-pill.on{ background:#E7F8EC; color:var(--fern); }
+  .slack-pill.off{ background:var(--light-gray); color:var(--dark-gray); }
+  .loading{ text-align:center; padding:60px 20px; color:var(--dark-gray); font-family:'MNKY Jane Semi'; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:12px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="masthead">
+    <div class="brand">
+      <img class="logo" src="/jetson-logo-green.png" alt="Jetson">
+      <div class="titles">
+        <h1>Weekly Order Board</h1>
+        <div class="eyebrow">Loading…</div>
+      </div>
+    </div>
+  </div>
+  <div class="loading">Setting the table…</div>
+</div>
+
+<script>
+let config = null;
+let submissions = {};
+let slackConfigured = false;
+let currentName = '';
+let tray = {};
+let settingsOpen = false;
+let statusMsg = null;
+let loaded = false;
+
+const TAG_LABEL = {
+  'keto':'Keto','calorie-smart':'Calorie Smart','protein-plus':'Protein+',
+  'vegan-veggie':'Vegan & Veggie','chefs-choice':"Chef's Choice"
+};
+
+async function loadState(){
+  try{
+    const r = await fetch('/api/state');
+    const data = await r.json();
+    config = data.config;
+    submissions = data.submissions || {};
+    slackConfigured = Boolean(data.slackConfigured);
+    loaded = true;
+  }catch(e){
+    statusMsg = {type:'err', text:'Could not reach the server. Refresh to try again.'};
+  }
+  render();
+}
+
+function trayTotal(){ return Object.values(tray).reduce((a,b)=>a+b,0); }
+
+function setQty(mealId, delta){
+  const cur = tray[mealId] || 0;
+  const next = Math.max(0, cur + delta);
+  const totalWithout = trayTotal() - cur;
+  if(totalWithout + next > config.mealsPerPerson) return;
+  if(next === 0){ delete tray[mealId]; } else { tray[mealId] = next; }
+  render();
+}
+
+function formatOrderText(name, meals){
+  const lines = Object.entries(meals).map(([id,qty])=>{
+    const meal = config.meals.find(m=>m.id===id);
+    return `${qty}x ${meal ? meal.name : id}`;
+  });
+  return lines.join(', ');
+}
+
+async function submitOrder(){
+  if(trayTotal() !== config.mealsPerPerson) return;
+  if(!currentName){ statusMsg = {type:'err', text:'Pick your name first.'}; render(); return; }
+
+  statusMsg = {type:'info', text:'Saving your order…'};
+  render();
+
+  try{
+    const r = await fetch('/api/submit', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name: currentName, meals: tray })
+    });
+    const data = await r.json();
+    if(!r.ok){ throw new Error(data.error || 'Save failed'); }
+    submissions = data.submissions;
+
+    if(!slackConfigured){
+      statusMsg = {type:'ok', text:'Order saved. Add a SLACK_WEBHOOK_URL environment variable in Vercel to auto-post to Slack.'};
+    }else if(data.slackOk){
+      statusMsg = {type:'ok', text:'Order saved and posted to Slack.'};
+    }else{
+      statusMsg = {type:'err', text:'Order saved, but the Slack post didn\u2019t go through — check the webhook URL in Vercel settings.'};
+    }
+  }catch(e){
+    statusMsg = {type:'err', text:'Could not save your order: ' + e.message};
+  }
+  render();
+}
+
+async function resetWeek(){
+  if(!confirm('Start a new week? This clears everyone\u2019s submitted orders (meal list and settings stay).')) return;
+  try{
+    await fetch('/api/reset', { method:'POST' });
+    submissions = {};
+    tray = {};
+    currentName = '';
+    statusMsg = {type:'ok', text:'New week started.'};
+  }catch(e){
+    statusMsg = {type:'err', text:'Could not reset: ' + e.message};
+  }
+  render();
+}
+
+function copyRollupText(){
+  const totals = {};
+  Object.values(submissions).forEach(sub=>{
+    Object.entries(sub.meals).forEach(([id,qty])=>{ totals[id]=(totals[id]||0)+qty; });
+  });
+  const lines = Object.entries(totals).sort((a,b)=>b[1]-a[1]).map(([id,qty])=>{
+    const meal = config.meals.find(m=>m.id===id);
+    return `${qty} x ${meal ? meal.name : id}`;
+  });
+  const text = `Factor order \u2014 ${config.teamNames.length} people, ${config.mealsPerPerson} meals each\n\n` + lines.join('\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    statusMsg = {type:'ok', text:'Rollup copied — paste it while checking out on factor75.com.'};
+    render();
+  });
+}
+
+function toggleSettings(){ settingsOpen = !settingsOpen; render(); }
+
+async function saveConfig(){
+  try{
+    await fetch('/api/config', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(config)
+    });
+  }catch(e){
+    statusMsg = {type:'err', text:'Could not save settings: ' + e.message};
+    render();
+  }
+}
+
+async function updateTeamName(i, v){
+  const old = config.teamNames[i];
+  config.teamNames[i] = v;
+  if(submissions[old]){ submissions[v] = submissions[old]; delete submissions[old]; }
+  await saveConfig();
+  render();
+}
+async function updateMealName(i, v){ config.meals[i].name = v; await saveConfig(); }
+async function updateMealTag(i, v){ config.meals[i].tag = v; await saveConfig(); render(); }
+async function removeMeal(i){ config.meals.splice(i,1); await saveConfig(); render(); }
+async function addMeal(){
+  const id = 'm' + Date.now();
+  config.meals.push({id, name:'New meal — edit me', tag:'chefs-choice'});
+  await saveConfig(); render();
+}
+async function updateMealsPerPerson(v){
+  const n = parseInt(v,10);
+  if(!n || n < 1) return;
+  config.mealsPerPerson = n;
+  await saveConfig(); render();
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function onNameChange(v){
+  currentName = v;
+  tray = submissions[v] ? {...submissions[v].meals} : {};
+  statusMsg = null;
+  render();
+}
+
+function render(){
+  const app = document.getElementById('app');
+  if(!loaded){
+    app.innerHTML = `<div class="masthead"><div class="brand"><img class="logo" src="/jetson-logo-green.png" alt="Jetson"><div class="titles"><h1>Weekly Order Board</h1><div class="eyebrow">Loading…</div></div></div></div><div class="loading">Setting the table…</div>`;
+    return;
+  }
+
+  const total = trayTotal();
+  const submittedCount = config.teamNames.filter(n=>submissions[n]).length;
+  const allIn = submittedCount === config.teamNames.length && config.teamNames.length > 0;
+
+  let html = `<div class="wrap">
+  <div class="masthead">
+    <div class="brand">
+      <img class="logo" src="/jetson-logo-green.png" alt="Jetson">
+      <div class="titles">
+        <h1>Weekly Order Board</h1>
+        <div class="eyebrow">Factor meals · ${config.mealsPerPerson} per person · ${config.teamNames.length} on the team</div>
+      </div>
+    </div>
+    <button class="gear" onclick="toggleSettings()">${settingsOpen ? 'Close settings' : 'Settings'}</button>
+  </div>
+  <div class="content">`;
+
+  if(settingsOpen){
+    html += `<div class="panel"><h2>Settings</h2><div class="settings-grid">
+      <div>
+        <label class="field-label">Slack posting</label>
+        <span class="slack-pill ${slackConfigured?'on':'off'}">${slackConfigured ? 'Connected' : 'Not connected'}</span>
+        <div class="hint">${slackConfigured ? 'Orders post automatically to the channel tied to your Slack webhook.' : 'Add a SLACK_WEBHOOK_URL environment variable in your Vercel project settings, then redeploy, to turn this on.'}</div>
+      </div>
+      <div>
+        <label class="field-label">Meals per person</label>
+        <input type="number" min="1" style="max-width:120px;" value="${config.mealsPerPerson}" onchange="updateMealsPerPerson(this.value)">
+      </div>
+      <div>
+        <label class="field-label">Team member names</label>
+        ${config.teamNames.map((n,i)=>`<input type="text" style="margin-bottom:8px;" value="${esc(n)}" onchange="updateTeamName(${i}, this.value)">`).join('')}
+      </div>
+      <div>
+        <label class="field-label">Meal list (edit to match this week's factor75.com menu)</label>
+        ${config.meals.map((m,i)=>`
+          <div class="edit-meal-row">
+            <input type="text" value="${esc(m.name)}" onchange="updateMealName(${i}, this.value)">
+            <select onchange="updateMealTag(${i}, this.value)">
+              ${Object.entries(TAG_LABEL).map(([k,label])=>`<option value="${k}" ${m.tag===k?'selected':''}>${label}</option>`).join('')}
+            </select>
+            <button class="small-btn" onclick="removeMeal(${i})" title="Remove">✕</button>
+          </div>`).join('')}
+        <button class="add-meal-btn" onclick="addMeal()">+ Add a meal</button>
+      </div>
+      <div>
+        <button class="danger-btn" onclick="resetWeek()">Start new week (clear submissions)</button>
+      </div>
+    </div></div>`;
+  }
+
+  html += `<div class="rail-label">This week's tickets</div>
+  <div class="rail">${config.teamNames.map(n=>{
+    const sub = submissions[n];
+    return `<div class="ticket ${sub?'filled':'empty'}">
+      <div class="name">${esc(n)}</div>
+      <div class="status">${sub ? 'Submitted ✓' : 'Waiting…'}</div>
+    </div>`;
+  }).join('')}</div>`;
+
+  if(statusMsg){
+    html += `<div class="msg ${statusMsg.type}">${esc(statusMsg.text)}</div>`;
+  }
+
+  html += `<div class="panel">
+    <h2>Place your order</h2>
+    <div class="row">
+      <div>
+        <label class="field-label">Your name</label>
+        <select onchange="onNameChange(this.value)">
+          <option value="" ${!currentName?'selected':''}>Select your name…</option>
+          ${config.teamNames.map(n=>`<option value="${esc(n)}" ${currentName===n?'selected':''}>${esc(n)}${submissions[n]?' (submitted)':''}</option>`).join('')}
+        </select>
+      </div>
+    </div>`;
+
+  if(currentName){
+    html += `<div class="tray-bar">
+      <div class="tray-count ${total===config.mealsPerPerson?'full':(total>config.mealsPerPerson?'over':'')}">${total} / ${config.mealsPerPerson} meals selected</div>
+      ${submissions[currentName] ? `<div class="hint">You already submitted — choosing again will update your order.</div>` : ''}
+    </div>
+    <div class="meal-grid">
+      ${config.meals.map(m=>{
+        const qty = tray[m.id]||0;
+        return `<div class="meal ${qty>0?'has-qty':''}">
+          <span class="tag tag-${m.tag}">${TAG_LABEL[m.tag]||m.tag}</span>
+          <div class="mname">${esc(m.name)}</div>
+          <div class="stepper">
+            <button onclick="setQty('${m.id}',-1)" ${qty<=0?'disabled':''}>−</button>
+            <span class="qty">${qty}</span>
+            <button onclick="setQty('${m.id}',1)" ${total>=config.mealsPerPerson?'disabled':''}>+</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <button class="submit-btn" ${total!==config.mealsPerPerson?'disabled':''} onclick="submitOrder()">Submit order${slackConfigured ? ' & post to Slack' : ''}</button>`;
+  }
+
+  html += `</div>`;
+
+  const totals = {};
+  Object.values(submissions).forEach(sub=>{
+    Object.entries(sub.meals).forEach(([id,qty])=>{ totals[id]=(totals[id]||0)+qty; });
+  });
+  const hasAny = Object.keys(totals).length>0;
+  html += `<div class="panel">
+    <h2>${allIn ? 'Order complete — ready for Factor' : 'Rollup so far'} (${submittedCount}/${config.teamNames.length} in)</h2>`;
+  if(!hasAny){
+    html += `<div class="hint">No orders yet. The rollup fills in as each person submits.</div>`;
+  }else{
+    html += `<table class="rollup-table"><thead><tr><th>Meal</th><th style="text-align:right;">Qty to order</th></tr></thead><tbody>
+      ${Object.entries(totals).sort((a,b)=>b[1]-a[1]).map(([id,qty])=>{
+        const meal = config.meals.find(m=>m.id===id);
+        return `<tr><td>${esc(meal?meal.name:id)}</td><td style="text-align:right;"><span class="qty-badge">${qty}</span></td></tr>`;
+      }).join('')}
+    </tbody></table>
+    <button class="copy-btn" onclick="copyRollupText()">Copy rollup as text</button>
+    <div class="by-person">
+      ${config.teamNames.filter(n=>submissions[n]).map(n=>`
+        <div class="person-block">
+          <h4>${esc(n)}</h4>
+          <ul>${Object.entries(submissions[n].meals).map(([id,qty])=>{
+            const meal = config.meals.find(m=>m.id===id);
+            return `<li>${qty}x ${esc(meal?meal.name:id)}</li>`;
+          }).join('')}</ul>
+        </div>`).join('')}
+    </div>`;
+  }
+  html += `</div></div></div>`;
+
+  app.innerHTML = html;
+}
+
+loadState();
+</script>
+</body>
+</html>
