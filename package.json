@@ -4,6 +4,6 @@
   "private": true,
   "description": "Weekly Factor meal order board for the Jetson service team",
   "dependencies": {
-    "@vercel/kv": "^1.0.1"
+    "@upstash/redis": "^1.34.0"
   }
 }

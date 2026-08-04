@@ -1,5 +1,7 @@
-const { kv } = require('@vercel/kv');
+const { Redis } = require('@upstash/redis');
 const { DEFAULT_CONFIG } = require('./_defaults');
+
+const redis = Redis.fromEnv();
 
 async function postToSlack(webhook, text) {
   try {
@@ -22,10 +24,10 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Missing name or meals' });
     }
 
-    const config = (await kv.get('config')) || DEFAULT_CONFIG;
-    const submissions = (await kv.get('submissions')) || {};
+    const config = (await redis.get('config')) || DEFAULT_CONFIG;
+    const submissions = (await redis.get('submissions')) || {};
     submissions[name] = { meals, submittedAt: new Date().toISOString() };
-    await kv.set('submissions', submissions);
+    await redis.set('submissions', submissions);
 
     const webhook = process.env.SLACK_WEBHOOK_URL;
     let slackOk = null;
