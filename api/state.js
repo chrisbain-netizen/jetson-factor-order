@@ -14,3 +14,4 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: 'Could not load state', detail: String(err) });
   }
 };
+// diagnostic check Tue Aug  4 13:55:23 EDT 2026
