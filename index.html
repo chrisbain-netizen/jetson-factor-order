@@ -175,17 +175,25 @@ function setQty(mealId, delta){
   const type = itemType(mealId);
   const cap = type === 'drink' ? drinksCap() : mealsCap();
   const curTotal = type === 'drink' ? trayDrinkTotal() : trayMealTotal();
+  const otherTotal = type === 'drink' ? trayMealTotal() : trayDrinkTotal();
   const cur = tray[mealId] || 0;
   const next = Math.max(0, cur + delta);
+  // Meals and drinks are mutually exclusive — block increasing one while the other has any selected.
+  if(delta > 0 && otherTotal > 0) return;
   const totalWithout = curTotal - cur;
   if(totalWithout + next > cap) return;
   if(next === 0){ delete tray[mealId]; } else { tray[mealId] = next; }
   render();
 }
 
+function orderIsValid(){
+  const m = trayMealTotal(), d = trayDrinkTotal();
+  if(d > 0) return d <= drinksCap() && m === 0;
+  return m === mealsCap();
+}
+
 async function submitOrder(){
-  if(trayMealTotal() !== mealsCap()) return;
-  if(trayDrinkTotal() > drinksCap()) return;
+  if(!orderIsValid()) return;
   if(!currentName){ statusMsg = {type:'err', text:'Pick your name first.'}; render(); return; }
 
   statusMsg = {type:'info', text:'Saving your order…'};
@@ -240,7 +248,7 @@ function copyRollupText(){
     const m = config.meals.find(x=>x.id===id);
     return `${qty} x ${m ? m.name : id}`;
   });
-  let text = `Factor order \u2014 ${config.teamNames.length} people, ${mealsCap()} meals + up to ${drinksCap()} smoothies each\n\nMEALS\n` + lineFor(mealTotals).join('\n');
+  let text = `Factor order \u2014 ${config.teamNames.length} people, ${mealsCap()} meals OR up to ${drinksCap()} smoothies each (not both)\n\nMEALS\n` + lineFor(mealTotals).join('\n');
   if(Object.keys(drinkTotals).length){
     text += `\n\nSMOOTHIES & DRINKS\n` + lineFor(drinkTotals).join('\n');
   }
@@ -319,16 +327,18 @@ function mealCard(m){
   const type = m.type||'meal';
   const cap = type==='drink' ? drinksCap() : mealsCap();
   const total = type==='drink' ? trayDrinkTotal() : trayMealTotal();
+  const otherTotal = type==='drink' ? trayMealTotal() : trayDrinkTotal();
   const tagClass = type==='drink' ? 'tag-drink' : `tag-${m.tag}`;
   const tagLabel = type==='drink' ? TAG_LABEL['drink'] : (TAG_LABEL[m.tag]||m.tag);
   const icon = type==='drink' ? TAG_ICON['drink'] : (TAG_ICON[m.tag]||'');
+  const plusDisabled = total>=cap || otherTotal>0;
   return `<div class="meal ${qty>0?'has-qty':''}">
     <span class="tag ${tagClass}">${icon}${tagLabel}</span>
     <div class="mname">${esc(m.name)}</div>
     <div class="stepper">
       <button onclick="setQty('${m.id}',-1)" ${qty<=0?'disabled':''}>−</button>
       <span class="qty">${qty}</span>
-      <button onclick="setQty('${m.id}',1)" ${total>=cap?'disabled':''}>+</button>
+      <button onclick="setQty('${m.id}',1)" ${plusDisabled?'disabled':''}>+</button>
     </div>
   </div>`;
 }
@@ -351,7 +361,7 @@ function render(){
       <img class="logo" src="/jetson-logo-green.png" alt="Jetson">
       <div class="titles">
         <h1>Weekly Order Board</h1>
-        <div class="eyebrow">Factor meals · ${mCap} meals + up to ${dCap} smoothies · ${config.teamNames.length} on the team</div>
+        <div class="eyebrow">Factor meals · ${mCap} meals OR up to ${dCap} smoothies · ${config.teamNames.length} on the team</div>
       </div>
     </div>
     <button class="gear" onclick="toggleSettings()">${settingsOpen ? 'Close settings' : 'Settings'}</button>
@@ -417,6 +427,7 @@ function render(){
 
   html += `<div class="panel">
     <h2>Place your order</h2>
+    <div class="msg info" style="margin-top:-6px;">Each week you get <strong>either ${mCap} meals or up to ${dCap} smoothies/drinks — not both.</strong> Picking one locks out the other until you clear your selection.</div>
     <div class="row">
       <div>
         <label class="field-label">Your name</label>
@@ -444,7 +455,7 @@ function render(){
       <div class="meal-grid">${di.map(mealCard).join('')}</div>`;
     }
 
-    html += `<button class="submit-btn" ${mTotal!==mCap?'disabled':''} onclick="submitOrder()">Submit order${slackConfigured ? ' & post to Slack' : ''}</button>`;
+    html += `<button class="submit-btn" ${!orderIsValid()?'disabled':''} onclick="submitOrder()">Submit order${slackConfigured ? ' & post to Slack' : ''}</button>`;
   }
 
   html += `</div>`;
