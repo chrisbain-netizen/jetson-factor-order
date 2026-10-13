@@ -13,56 +13,27 @@
   @font-face{ font-family:'MNKY Jane'; src:url('/fonts/mnkyjane-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 
   :root{
-    --jetson-green:#3CD567;
-    --forest:#0F1F0D;
-    --fern:#113823;
-    --lime:#CBFF8A;
-    --off-white:#FBFAF1;
-    --dark-gray:#666858;
-    --mid-gray:#ACAA93;
-    --soft-gray:#E2E1D3;
-    --light-gray:#F2F0E4;
+    --jetson-green:#3CD567; --forest:#0F1F0D; --fern:#113823; --lime:#CBFF8A;
+    --off-white:#FBFAF1; --dark-gray:#666858; --mid-gray:#ACAA93; --soft-gray:#E2E1D3; --light-gray:#F2F0E4;
     --shadow: 0 1px 2px rgba(15,31,13,0.08), 0 6px 18px rgba(15,31,13,0.07);
   }
   *{ box-sizing:border-box; }
-  body{
-    margin:0; background:var(--off-white); color:var(--forest);
-    font-family:'MNKY Jane',Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{ margin:0; background:var(--off-white); color:var(--forest); font-family:'MNKY Jane',Arial,sans-serif; -webkit-font-smoothing:antialiased; }
   .wrap{ max-width:960px; margin:0 auto; padding:0 0 60px; }
 
-  .masthead{
-    background:var(--forest); color:var(--off-white);
-    padding:22px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
-    border-bottom:4px solid var(--jetson-green);
-  }
+  .masthead{ background:var(--forest); color:var(--off-white); padding:22px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:4px solid var(--jetson-green); }
   .masthead .brand{ display:flex; align-items:center; gap:14px; }
   .masthead img.logo{ height:28px; display:block; }
-  .masthead .titles h1{
-    font-family:'MNKY Jane Condensed'; font-weight:900; text-transform:uppercase;
-    font-size:24px; line-height:0.9; margin:0; letter-spacing:0.5px;
-  }
-  .masthead .titles .eyebrow{
-    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1.5px;
-    text-transform:uppercase; color:var(--lime); margin-top:5px;
-  }
-  .gear{
-    background:none; border:1px solid var(--off-white); color:var(--off-white);
-    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase;
-    padding:9px 14px; border-radius:20px; cursor:pointer;
-  }
+  .masthead .titles h1{ font-family:'MNKY Jane Condensed'; font-weight:900; text-transform:uppercase; font-size:24px; line-height:0.9; margin:0; letter-spacing:0.5px; }
+  .masthead .titles .eyebrow{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--lime); margin-top:5px; }
+  .gear{ background:none; border:1px solid var(--off-white); color:var(--off-white); font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:9px 14px; border-radius:20px; cursor:pointer; }
   .gear:hover{ background:var(--jetson-green); color:var(--forest); border-color:var(--jetson-green); }
 
   .content{ padding:24px 24px 0; }
-
   .rail-label{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dark-gray); margin-bottom:8px; }
   .rail{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:26px; }
   @media (max-width:700px){ .rail{ grid-template-columns:repeat(2,1fr); } }
-  .ticket{
-    position:relative; background:#fff; border-radius:3px; padding:14px 12px 16px;
-    box-shadow:var(--shadow); min-height:78px; border-top:3px dashed var(--soft-gray);
-  }
+  .ticket{ position:relative; background:#fff; border-radius:3px; padding:14px 12px 16px; box-shadow:var(--shadow); min-height:78px; border-top:3px dashed var(--soft-gray); }
   .ticket.filled{ border-top:3px solid var(--jetson-green); }
   .ticket .name{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.3px; }
   .ticket .status{ font-family:'MNKY Jane'; font-size:12px; color:var(--dark-gray); margin-top:4px; }
@@ -71,22 +42,17 @@
 
   .panel{ background:#fff; border-radius:6px; box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
   .panel h2{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:15px; text-transform:uppercase; letter-spacing:0.8px; margin:0 0 16px; color:var(--fern); }
+  .panel h3{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.6px; margin:22px 0 10px; color:var(--dark-gray); }
+  .panel h3:first-of-type{ margin-top:0; }
 
   label.field-label{ display:block; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--dark-gray); margin-bottom:6px; }
-  select, input[type=text], input[type=number]{
-    font-family:'MNKY Jane',Arial,sans-serif; font-size:15px; padding:10px 12px;
-    border:1px solid var(--soft-gray); border-radius:4px; background:var(--off-white); color:var(--forest); width:100%;
-  }
+  select, input[type=text], input[type=number]{ font-family:'MNKY Jane',Arial,sans-serif; font-size:15px; padding:10px 12px; border:1px solid var(--soft-gray); border-radius:4px; background:var(--off-white); color:var(--forest); width:100%; }
   select:focus, input:focus{ outline:2px solid var(--jetson-green); outline-offset:1px; }
 
   .row{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; margin-bottom:18px; }
   .row > div{ flex:1; min-width:180px; }
 
-  .tray-bar{
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
-    background:var(--light-gray); border:1px solid var(--soft-gray); border-radius:6px; padding:10px 16px; margin-bottom:16px;
-    position:sticky; top:10px; z-index:5;
-  }
+  .tray-bar{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; background:var(--light-gray); border:1px solid var(--soft-gray); border-radius:6px; padding:10px 16px; margin-bottom:16px; position:sticky; top:10px; z-index:5; }
   .tray-count{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:14px; color:var(--dark-gray); }
   .tray-count.full{ color:var(--fern); }
   .tray-count.over{ color:#B0432B; }
@@ -101,16 +67,14 @@
   .tag-protein-plus{ background:var(--jetson-green); color:var(--forest); }
   .tag-vegan-veggie{ background:var(--lime); color:var(--forest); }
   .tag-chefs-choice{ background:var(--dark-gray); color:var(--off-white); }
+  .tag-drink{ background:#2F7A8C; color:var(--off-white); }
   .meal .mname{ font-size:14px; line-height:1.35; flex:1; }
   .stepper{ display:flex; align-items:center; justify-content:space-between; }
   .stepper button{ width:28px; height:28px; border-radius:50%; border:1px solid var(--forest); background:#fff; font-size:16px; cursor:pointer; line-height:1; color:var(--forest); }
   .stepper button:disabled{ opacity:0.3; cursor:not-allowed; }
   .stepper .qty{ font-family:'MNKY Jane Semi'; font-weight:900; font-size:15px; min-width:20px; text-align:center; }
 
-  .submit-btn{
-    font-family:'MNKY Jane Semi'; text-transform:uppercase; letter-spacing:1px; font-size:13px; font-weight:900;
-    background:var(--jetson-green); color:var(--forest); border:none; padding:14px 22px; border-radius:4px; cursor:pointer; width:100%;
-  }
+  .submit-btn{ font-family:'MNKY Jane Semi'; text-transform:uppercase; letter-spacing:1px; font-size:13px; font-weight:900; background:var(--jetson-green); color:var(--forest); border:none; padding:14px 22px; border-radius:4px; cursor:pointer; width:100%; }
   .submit-btn:disabled{ background:var(--soft-gray); color:var(--mid-gray); cursor:not-allowed; }
   .submit-btn:not(:disabled):hover{ background:var(--lime); }
 
@@ -119,7 +83,7 @@
   .msg.err{ background:#FBEAE4; color:#8A3A22; }
   .msg.info{ background:var(--light-gray); color:var(--dark-gray); }
 
-  .rollup-table{ width:100%; border-collapse:collapse; font-size:14px; }
+  .rollup-table{ width:100%; border-collapse:collapse; font-size:14px; margin-bottom:10px; }
   .rollup-table th{ text-align:left; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--dark-gray); border-bottom:2px solid var(--forest); padding:8px 6px; }
   .rollup-table td{ padding:9px 6px; border-bottom:1px solid var(--soft-gray); }
   .rollup-table tr:last-child td{ border-bottom:none; }
@@ -130,23 +94,14 @@
   .person-block h4{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin:0 0 6px; color:var(--fern); }
   .person-block ul{ margin:0; padding-left:18px; font-size:14px; }
 
-  .copy-btn{
-    font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:1px;
-    background:none; border:1px solid var(--forest); color:var(--forest); padding:8px 14px; border-radius:20px; cursor:pointer; margin-top:14px;
-  }
+  .copy-btn{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:1px; background:none; border:1px solid var(--forest); color:var(--forest); padding:8px 14px; border-radius:20px; cursor:pointer; margin-top:14px; }
   .copy-btn:hover{ background:var(--forest); color:var(--off-white); }
 
   .settings-grid{ display:grid; gap:16px; }
-  .edit-meal-row{ display:grid; grid-template-columns:1fr 140px 32px; gap:8px; align-items:center; margin-bottom:8px; }
+  .edit-meal-row{ display:grid; grid-template-columns:1fr 140px 110px 32px; gap:8px; align-items:center; margin-bottom:8px; }
   .small-btn{ background:none; border:1px solid var(--soft-gray); border-radius:4px; cursor:pointer; padding:6px; font-size:14px; color:var(--forest); }
-  .add-meal-btn{
-    font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;
-    background:var(--off-white); border:1px dashed var(--mid-gray); padding:8px 12px; border-radius:4px; cursor:pointer; width:100%; color:var(--dark-gray);
-  }
-  .danger-btn{
-    font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;
-    background:none; color:#8A3A22; border:1px solid #8A3A22; padding:9px 14px; border-radius:4px; cursor:pointer;
-  }
+  .add-meal-btn{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; background:var(--off-white); border:1px dashed var(--mid-gray); padding:8px 12px; border-radius:4px; cursor:pointer; width:100%; color:var(--dark-gray); margin-top:4px; }
+  .danger-btn{ font-family:'MNKY Jane Semi'; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; background:none; color:#8A3A22; border:1px solid #8A3A22; padding:9px 14px; border-radius:4px; cursor:pointer; }
   .hint{ font-size:12px; color:var(--dark-gray); margin-top:4px; }
   .slack-pill{ display:inline-flex; align-items:center; gap:6px; font-family:'MNKY Jane Semi'; font-weight:700; font-size:11px; letter-spacing:0.5px; text-transform:uppercase; padding:5px 10px; border-radius:14px; }
   .slack-pill.on{ background:#E7F8EC; color:var(--fern); }
@@ -159,10 +114,7 @@
   <div class="masthead">
     <div class="brand">
       <img class="logo" src="/jetson-logo-green.png" alt="Jetson">
-      <div class="titles">
-        <h1>Weekly Order Board</h1>
-        <div class="eyebrow">Loading…</div>
-      </div>
+      <div class="titles"><h1>Weekly Order Board</h1><div class="eyebrow">Loading…</div></div>
     </div>
   </div>
   <div class="loading">Setting the table…</div>
@@ -180,22 +132,34 @@ let loaded = false;
 
 const TAG_LABEL = {
   'keto':'Keto','calorie-smart':'Calorie Smart','protein-plus':'Protein+',
-  'vegan-veggie':'Vegan & Veggie','chefs-choice':"Chef's Choice"
+  'vegan-veggie':'Vegan & Veggie','chefs-choice':"Chef's Choice",'drink':'Smoothie'
 };
-
 const TAG_ICON = {
   'chefs-choice': '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c-2.2 0-4 1.8-4 4 0 .3 0 .6.1.9C6.7 7.9 5.5 9.3 5.5 11c0 2 1.6 3.6 3.6 3.6h.4v3.9c0 .6.4 1 1 1h3c.6 0 1-.4 1-1v-3.9h.4c2 0 3.6-1.6 3.6-3.6 0-1.7-1.2-3.1-2.6-3.6.1-.3.1-.6.1-.9 0-2.2-1.8-4-4-4z"/></svg>',
   'keto': '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 2c.5 2.5-1.7 3.6-2.9 5.2-1.2 1.6-1.8 3.4-1.8 4.8a4.2 4.2 0 0 0 8.4 0c0-1.1-.4-2-1-2.7 0 .9-.4 1.7-1.1 2.1a1.9 1.9 0 0 1-2.8-1.6c0-1.6 1.3-2.6 1.7-4.2.3-1.1.2-2.3-.5-3.6z"/></svg>',
   'calorie-smart': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 14 15 9"/><circle cx="12" cy="14" r="1" fill="currentColor" stroke="none"/></svg>',
   'protein-plus': '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1" y="9" width="3" height="6" rx="1"/><rect x="5" y="7" width="2" height="10" rx="1"/><rect x="8" y="10.5" width="8" height="3" rx="1"/><rect x="17" y="7" width="2" height="10" rx="1"/><rect x="20" y="9" width="3" height="6" rx="1"/></svg>',
-  'vegan-veggie': '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4c-6 0-11 2-14 6-2.5 3.3-2.5 7-1 9 2 2.5 5.7 2.5 9 0 4-3 6-8 6-15z"/><path d="M6 19 18 6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/></svg>'
+  'vegan-veggie': '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4c-6 0-11 2-14 6-2.5 3.3-2.5 7-1 9 2 2.5 5.7 2.5 9 0 4-3 6-8 6-15z"/><path d="M6 19 18 6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/></svg>',
+  'drink': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-1.5 15a2 2 0 0 1-2 1.8h-5a2 2 0 0 1-2-1.8L6 3z"/><path d="M6.8 8h10.4"/></svg>'
 };
+
+function itemType(id){
+  const m = config.meals.find(x=>x.id===id);
+  return m ? (m.type || 'meal') : 'meal';
+}
+function mealsCap(){ return config.mealsPerPerson || 5; }
+function drinksCap(){ return config.drinksPerPerson || 2; }
+function mealItems(){ return config.meals.filter(m=>(m.type||'meal')==='meal'); }
+function drinkItems(){ return config.meals.filter(m=>m.type==='drink'); }
+function trayMealTotal(){ return Object.entries(tray).filter(([id])=>itemType(id)==='meal').reduce((a,[,q])=>a+q,0); }
+function trayDrinkTotal(){ return Object.entries(tray).filter(([id])=>itemType(id)==='drink').reduce((a,[,q])=>a+q,0); }
 
 async function loadState(){
   try{
     const r = await fetch('/api/state');
     const data = await r.json();
     config = data.config;
+    if(config.drinksPerPerson === undefined) config.drinksPerPerson = 2;
     submissions = data.submissions || {};
     slackConfigured = Boolean(data.slackConfigured);
     loaded = true;
@@ -205,27 +169,21 @@ async function loadState(){
   render();
 }
 
-function trayTotal(){ return Object.values(tray).reduce((a,b)=>a+b,0); }
-
 function setQty(mealId, delta){
+  const type = itemType(mealId);
+  const cap = type === 'drink' ? drinksCap() : mealsCap();
+  const curTotal = type === 'drink' ? trayDrinkTotal() : trayMealTotal();
   const cur = tray[mealId] || 0;
   const next = Math.max(0, cur + delta);
-  const totalWithout = trayTotal() - cur;
-  if(totalWithout + next > config.mealsPerPerson) return;
+  const totalWithout = curTotal - cur;
+  if(totalWithout + next > cap) return;
   if(next === 0){ delete tray[mealId]; } else { tray[mealId] = next; }
   render();
 }
 
-function formatOrderText(name, meals){
-  const lines = Object.entries(meals).map(([id,qty])=>{
-    const meal = config.meals.find(m=>m.id===id);
-    return `${qty}x ${meal ? meal.name : id}`;
-  });
-  return lines.join(', ');
-}
-
 async function submitOrder(){
-  if(trayTotal() !== config.mealsPerPerson) return;
+  if(trayMealTotal() !== mealsCap()) return;
+  if(trayDrinkTotal() > drinksCap()) return;
   if(!currentName){ statusMsg = {type:'err', text:'Pick your name first.'}; render(); return; }
 
   statusMsg = {type:'info', text:'Saving your order…'};
@@ -269,15 +227,21 @@ async function resetWeek(){
 }
 
 function copyRollupText(){
-  const totals = {};
+  const mealTotals = {}, drinkTotals = {};
   Object.values(submissions).forEach(sub=>{
-    Object.entries(sub.meals).forEach(([id,qty])=>{ totals[id]=(totals[id]||0)+qty; });
+    Object.entries(sub.meals).forEach(([id,qty])=>{
+      const bucket = itemType(id)==='drink' ? drinkTotals : mealTotals;
+      bucket[id] = (bucket[id]||0)+qty;
+    });
   });
-  const lines = Object.entries(totals).sort((a,b)=>b[1]-a[1]).map(([id,qty])=>{
-    const meal = config.meals.find(m=>m.id===id);
-    return `${qty} x ${meal ? meal.name : id}`;
+  const lineFor = (totals) => Object.entries(totals).sort((a,b)=>b[1]-a[1]).map(([id,qty])=>{
+    const m = config.meals.find(x=>x.id===id);
+    return `${qty} x ${m ? m.name : id}`;
   });
-  const text = `Factor order \u2014 ${config.teamNames.length} people, ${config.mealsPerPerson} meals each\n\n` + lines.join('\n');
+  let text = `Factor order \u2014 ${config.teamNames.length} people, ${mealsCap()} meals + up to ${drinksCap()} smoothies each\n\nMEALS\n` + lineFor(mealTotals).join('\n');
+  if(Object.keys(drinkTotals).length){
+    text += `\n\nSMOOTHIES & DRINKS\n` + lineFor(drinkTotals).join('\n');
+  }
   navigator.clipboard.writeText(text).then(()=>{
     statusMsg = {type:'ok', text:'Rollup copied — paste it while checking out on factor75.com.'};
     render();
@@ -315,21 +279,27 @@ async function updateTeamName(i, v){
   const old = config.teamNames[i];
   config.teamNames[i] = v;
   if(submissions[old]){ submissions[v] = submissions[old]; delete submissions[old]; }
-  await saveConfig();
-  render();
+  await saveConfig(); render();
 }
 async function updateMealName(i, v){ config.meals[i].name = v; await saveConfig(); }
 async function updateMealTag(i, v){ config.meals[i].tag = v; await saveConfig(); render(); }
+async function updateMealType(i, v){ config.meals[i].type = v; await saveConfig(); render(); }
 async function removeMeal(i){ config.meals.splice(i,1); await saveConfig(); render(); }
-async function addMeal(){
+async function addMeal(type){
   const id = 'm' + Date.now();
-  config.meals.push({id, name:'New meal — edit me', tag:'chefs-choice'});
+  config.meals.push({id, name:'New item — edit me', tag: type==='drink' ? 'drink' : 'chefs-choice', type: type||'meal'});
   await saveConfig(); render();
 }
 async function updateMealsPerPerson(v){
   const n = parseInt(v,10);
   if(!n || n < 1) return;
   config.mealsPerPerson = n;
+  await saveConfig(); render();
+}
+async function updateDrinksPerPerson(v){
+  const n = parseInt(v,10);
+  if(n === null || n < 0 || isNaN(n)) return;
+  config.drinksPerPerson = n;
   await saveConfig(); render();
 }
 
@@ -342,6 +312,25 @@ function onNameChange(v){
   render();
 }
 
+function mealCard(m){
+  const qty = tray[m.id]||0;
+  const type = m.type||'meal';
+  const cap = type==='drink' ? drinksCap() : mealsCap();
+  const total = type==='drink' ? trayDrinkTotal() : trayMealTotal();
+  const tagClass = type==='drink' ? 'tag-drink' : `tag-${m.tag}`;
+  const tagLabel = type==='drink' ? TAG_LABEL['drink'] : (TAG_LABEL[m.tag]||m.tag);
+  const icon = type==='drink' ? TAG_ICON['drink'] : (TAG_ICON[m.tag]||'');
+  return `<div class="meal ${qty>0?'has-qty':''}">
+    <span class="tag ${tagClass}">${icon}${tagLabel}</span>
+    <div class="mname">${esc(m.name)}</div>
+    <div class="stepper">
+      <button onclick="setQty('${m.id}',-1)" ${qty<=0?'disabled':''}>−</button>
+      <span class="qty">${qty}</span>
+      <button onclick="setQty('${m.id}',1)" ${total>=cap?'disabled':''}>+</button>
+    </div>
+  </div>`;
+}
+
 function render(){
   const app = document.getElementById('app');
   if(!loaded){
@@ -349,7 +338,8 @@ function render(){
     return;
   }
 
-  const total = trayTotal();
+  const mCap = mealsCap(), dCap = drinksCap();
+  const mTotal = trayMealTotal(), dTotal = trayDrinkTotal();
   const submittedCount = config.teamNames.filter(n=>submissions[n]).length;
   const allIn = submittedCount === config.teamNames.length && config.teamNames.length > 0;
 
@@ -359,7 +349,7 @@ function render(){
       <img class="logo" src="/jetson-logo-green.png" alt="Jetson">
       <div class="titles">
         <h1>Weekly Order Board</h1>
-        <div class="eyebrow">Factor meals · ${config.mealsPerPerson} per person · ${config.teamNames.length} on the team</div>
+        <div class="eyebrow">Factor meals · ${mCap} meals + up to ${dCap} smoothies · ${config.teamNames.length} on the team</div>
       </div>
     </div>
     <button class="gear" onclick="toggleSettings()">${settingsOpen ? 'Close settings' : 'Settings'}</button>
@@ -373,25 +363,36 @@ function render(){
         <span class="slack-pill ${slackConfigured?'on':'off'}">${slackConfigured ? 'Connected' : 'Not connected'}</span>
         <div class="hint">${slackConfigured ? 'Orders post automatically to the channel tied to your Slack webhook.' : 'Add a SLACK_WEBHOOK_URL environment variable in your Vercel project settings, then redeploy, to turn this on.'}</div>
       </div>
-      <div>
-        <label class="field-label">Meals per person</label>
-        <input type="number" min="1" style="max-width:120px;" value="${config.mealsPerPerson}" onchange="updateMealsPerPerson(this.value)">
+      <div class="row" style="margin-bottom:0;">
+        <div>
+          <label class="field-label">Meals per person</label>
+          <input type="number" min="1" value="${mCap}" onchange="updateMealsPerPerson(this.value)">
+        </div>
+        <div>
+          <label class="field-label">Smoothies/drinks per person</label>
+          <input type="number" min="0" value="${dCap}" onchange="updateDrinksPerPerson(this.value)">
+        </div>
       </div>
       <div>
         <label class="field-label">Team member names</label>
         ${config.teamNames.map((n,i)=>`<input type="text" style="margin-bottom:8px;" value="${esc(n)}" onchange="updateTeamName(${i}, this.value)">`).join('')}
       </div>
       <div>
-        <label class="field-label">Meal list (edit to match this week's factor75.com menu)</label>
+        <label class="field-label">Meals &amp; smoothies (edit to match this week's factor75.com menu)</label>
         ${config.meals.map((m,i)=>`
           <div class="edit-meal-row">
             <input type="text" value="${esc(m.name)}" onchange="updateMealName(${i}, this.value)">
-            <select onchange="updateMealTag(${i}, this.value)">
-              ${Object.entries(TAG_LABEL).map(([k,label])=>`<option value="${k}" ${m.tag===k?'selected':''}>${label}</option>`).join('')}
+            <select onchange="updateMealTag(${i}, this.value)" ${m.type==='drink'?'disabled':''}>
+              ${Object.entries(TAG_LABEL).filter(([k])=>k!=='drink').map(([k,label])=>`<option value="${k}" ${m.tag===k?'selected':''}>${label}</option>`).join('')}
+            </select>
+            <select onchange="updateMealType(${i}, this.value)">
+              <option value="meal" ${(m.type||'meal')==='meal'?'selected':''}>Meal</option>
+              <option value="drink" ${m.type==='drink'?'selected':''}>Smoothie</option>
             </select>
             <button class="small-btn" onclick="removeMeal(${i})" title="Remove">✕</button>
           </div>`).join('')}
-        <button class="add-meal-btn" onclick="addMeal()">+ Add a meal</button>
+        <button class="add-meal-btn" onclick="addMeal('meal')">+ Add a meal</button>
+        <button class="add-meal-btn" onclick="addMeal('drink')">+ Add a smoothie/drink</button>
       </div>
       <div>
         <button class="danger-btn" onclick="resetWeek()">Start new week (clear submissions)</button>
@@ -425,53 +426,58 @@ function render(){
     </div>`;
 
   if(currentName){
-    html += `<div class="tray-bar">
-      <div class="tray-count ${total===config.mealsPerPerson?'full':(total>config.mealsPerPerson?'over':'')}">${total} / ${config.mealsPerPerson} meals selected</div>
+    const mi = mealItems(), di = drinkItems();
+    html += `<h3>Meals</h3>
+    <div class="tray-bar">
+      <div class="tray-count ${mTotal===mCap?'full':(mTotal>mCap?'over':'')}">${mTotal} / ${mCap} meals selected</div>
       ${submissions[currentName] ? `<div class="hint">You already submitted — choosing again will update your order.</div>` : ''}
     </div>
-    <div class="meal-grid">
-      ${config.meals.map(m=>{
-        const qty = tray[m.id]||0;
-        return `<div class="meal ${qty>0?'has-qty':''}">
-          <span class="tag tag-${m.tag}">${TAG_ICON[m.tag]||''}${TAG_LABEL[m.tag]||m.tag}</span>
-          <div class="mname">${esc(m.name)}</div>
-          <div class="stepper">
-            <button onclick="setQty('${m.id}',-1)" ${qty<=0?'disabled':''}>−</button>
-            <span class="qty">${qty}</span>
-            <button onclick="setQty('${m.id}',1)" ${total>=config.mealsPerPerson?'disabled':''}>+</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-    <button class="submit-btn" ${total!==config.mealsPerPerson?'disabled':''} onclick="submitOrder()">Submit order${slackConfigured ? ' & post to Slack' : ''}</button>`;
+    <div class="meal-grid">${mi.map(mealCard).join('')}</div>`;
+
+    if(di.length){
+      html += `<h3>Smoothies &amp; Drinks (optional, up to ${dCap})</h3>
+      <div class="tray-bar">
+        <div class="tray-count ${dTotal>=dCap?'full':''}">${dTotal} / ${dCap} smoothies selected</div>
+      </div>
+      <div class="meal-grid">${di.map(mealCard).join('')}</div>`;
+    }
+
+    html += `<button class="submit-btn" ${mTotal!==mCap?'disabled':''} onclick="submitOrder()">Submit order${slackConfigured ? ' & post to Slack' : ''}</button>`;
   }
 
   html += `</div>`;
 
-  const totals = {};
+  const mealTotals = {}, drinkTotals = {};
   Object.values(submissions).forEach(sub=>{
-    Object.entries(sub.meals).forEach(([id,qty])=>{ totals[id]=(totals[id]||0)+qty; });
+    Object.entries(sub.meals).forEach(([id,qty])=>{
+      const bucket = itemType(id)==='drink' ? drinkTotals : mealTotals;
+      bucket[id] = (bucket[id]||0)+qty;
+    });
   });
-  const hasAny = Object.keys(totals).length>0;
+  const hasAny = Object.keys(mealTotals).length || Object.keys(drinkTotals).length;
   html += `<div class="panel">
     <h2>${allIn ? 'Order complete — ready for Factor' : 'Rollup so far'} (${submittedCount}/${config.teamNames.length} in)</h2>`;
   if(!hasAny){
     html += `<div class="hint">No orders yet. The rollup fills in as each person submits.</div>`;
   }else{
-    html += `<table class="rollup-table"><thead><tr><th>Meal</th><th style="text-align:right;">Qty to order</th></tr></thead><tbody>
+    const table = (totals) => `<table class="rollup-table"><thead><tr><th>Item</th><th style="text-align:right;">Qty</th></tr></thead><tbody>
       ${Object.entries(totals).sort((a,b)=>b[1]-a[1]).map(([id,qty])=>{
-        const meal = config.meals.find(m=>m.id===id);
-        return `<tr><td>${esc(meal?meal.name:id)}</td><td style="text-align:right;"><span class="qty-badge">${qty}</span></td></tr>`;
+        const m = config.meals.find(x=>x.id===id);
+        return `<tr><td>${esc(m?m.name:id)}</td><td style="text-align:right;"><span class="qty-badge">${qty}</span></td></tr>`;
       }).join('')}
-    </tbody></table>
-    <button class="copy-btn" onclick="copyRollupText()">Copy rollup as text</button>
+    </tbody></table>`;
+    html += `<h3 style="margin-top:0;">Meals</h3>${table(mealTotals)}`;
+    if(Object.keys(drinkTotals).length){
+      html += `<h3>Smoothies &amp; Drinks</h3>${table(drinkTotals)}`;
+    }
+    html += `<button class="copy-btn" onclick="copyRollupText()">Copy rollup as text</button>
     <div class="by-person">
       ${config.teamNames.filter(n=>submissions[n]).map(n=>`
         <div class="person-block">
           <h4>${esc(n)}</h4>
           <ul>${Object.entries(submissions[n].meals).map(([id,qty])=>{
-            const meal = config.meals.find(m=>m.id===id);
-            return `<li>${qty}x ${esc(meal?meal.name:id)}</li>`;
+            const m = config.meals.find(x=>x.id===id);
+            return `<li>${qty}x ${esc(m?m.name:id)}</li>`;
           }).join('')}</ul>
         </div>`).join('')}
     </div>`;

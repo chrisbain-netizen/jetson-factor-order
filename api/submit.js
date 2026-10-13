@@ -16,6 +16,20 @@ async function postToSlack(webhook, text) {
   }
 }
 
+function groupedLines(meals, config) {
+  const mealLines = [];
+  const drinkLines = [];
+  Object.entries(meals).forEach(([id, qty]) => {
+    const m = config.meals.find((x) => x.id === id);
+    const line = `\u2022 ${qty}x ${m ? m.name : id}`;
+    if (m && m.type === 'drink') drinkLines.push(line);
+    else mealLines.push(line);
+  });
+  let out = mealLines.join('\n');
+  if (drinkLines.length) out += `\n\n*Smoothies/drinks:*\n` + drinkLines.join('\n');
+  return out;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
@@ -33,28 +47,18 @@ module.exports = async (req, res) => {
     let slackOk = null;
 
     if (webhook) {
-      const lines = Object.entries(meals).map(([id, qty]) => {
-        const meal = config.meals.find((m) => m.id === id);
-        return `\u2022 ${qty}x ${meal ? meal.name : id}`;
-      });
-      const text = `:fork_and_knife: *Factor order submitted \u2014 ${name}*\n${lines.join('\n')}\n\n(${Object.keys(submissions).length}/${config.teamNames.length} submitted this week)`;
+      const text = `:fork_and_knife: *Factor order submitted \u2014 ${name}*\n${groupedLines(meals, config)}\n\n(${Object.keys(submissions).length}/${config.teamNames.length} submitted this week)`;
       slackOk = await postToSlack(webhook, text);
 
       const allIn = config.teamNames.every((n) => submissions[n]);
       if (allIn) {
-        const totals = {};
+        const combined = {};
         Object.values(submissions).forEach((sub) => {
           Object.entries(sub.meals).forEach(([id, qty]) => {
-            totals[id] = (totals[id] || 0) + qty;
+            combined[id] = (combined[id] || 0) + qty;
           });
         });
-        const rollupLines = Object.entries(totals)
-          .sort((a, b) => b[1] - a[1])
-          .map(([id, qty]) => {
-            const meal = config.meals.find((m) => m.id === id);
-            return `\u2022 ${qty}x ${meal ? meal.name : id}`;
-          });
-        const rollupText = `:white_check_mark: *All ${config.teamNames.length} team members have submitted!* Combined Factor order:\n${rollupLines.join('\n')}`;
+        const rollupText = `:white_check_mark: *All ${config.teamNames.length} team members have submitted!* Combined Factor order:\n${groupedLines(combined, config)}`;
         await postToSlack(webhook, rollupText);
       }
     }
